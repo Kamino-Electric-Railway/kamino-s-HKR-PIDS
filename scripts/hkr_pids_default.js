@@ -1,19 +1,16 @@
 include(Resources.id("jsblock:scripts/pids_util.js"));
-const IMG_EMPTY       = "jsblock:textures/pids/1.png";
-const IMG_4ARRIVALS   = "jsblock:textures/pids/2.png";
-const IMG_ROUTEMAP    = "jsblock:textures/pids/3.png";
-const IMG_ARRIVING    = "jsblock:textures/pids/4.png";
+const IMG_EMPTY = "jsblock:textures/pids/1.png";
+const IMG_4ARRIVALS = "jsblock:textures/pids/2.png";
+const IMG_ROUTEMAP = "jsblock:textures/pids/3.png";
+const IMG_ARRIVING = "jsblock:textures/pids/4.png";
 const IMG_DOORCLOSING = "jsblock:textures/pids/5.png";
 const IMG_PLATFORM_CIRCLE = "jsblock:textures/pids/plat_circle.png";
-const IMG_ARROW           = "jsblock:textures/pids/arrow.png";
-
+const IMG_ARROW = "jsblock:textures/pids/arrow.png";
 const LANG_PHASE_FRAMES = 120;
 const PHASES_PER_VIEW = 4;
-
 const HEADER_OFFSET = 13;
 const ROW_SPACING = 16.75;
 const TEXT_SCALE = 1.25;
-
 const COL_NUM_X = 2;
 const COL_NUM_W = 28;
 const COL_DEST_X = 34;
@@ -71,13 +68,13 @@ function render(ctx, state, pids) {
     if (mode === "arriving") {
         drawImage(ctx, pids, IMG_ARRIVING);
         drawWeatherAndClock(ctx, pids);
-        drawArrivingView(ctx, pids, firstTrain, now);
+        drawArrivingView(ctx, pids, firstTrain);
         return;
     }
     if (mode === "doorclosing") {
         drawImage(ctx, pids, IMG_DOORCLOSING);
         drawWeatherAndClock(ctx, pids);
-        drawDoorClosingView(ctx, pids, firstTrain, now);
+        drawDoorClosingView(ctx, pids, firstTrain);
         return;
     }
 
@@ -149,7 +146,7 @@ function drawRouteMapView(ctx, pids, train, now) {
     }
 }
 
-function drawArrivingView(ctx, pids, train, now) {
+function drawArrivingView(ctx, pids, train) {
     let y = HEADER_OFFSET + 3 * ROW_SPACING;
     drawTrainNumber(ctx, pids, train, COL_NUM_X, y);
     drawDestination(ctx, pids, train, COL_DEST_X, y);
@@ -166,7 +163,7 @@ function drawArrivingView(ctx, pids, train, now) {
         .draw(ctx);
 }
 
-function drawDoorClosingView(ctx, pids, train, now) {
+function drawDoorClosingView(ctx, pids, train) {
     let y = HEADER_OFFSET + 3 * ROW_SPACING;
     drawTrainNumber(ctx, pids, train, COL_NUM_X, y);
     drawDestination(ctx, pids, train, COL_DEST_X, y);
@@ -306,7 +303,7 @@ function drawRouteMapStations(ctx, pids, train) {
             .size(cx1 - cx0, lineThickness)
             .draw(ctx);
 
-        drawArrowImage(ctx, (cx0 + cx1) / 2, lineY, lineColor);
+        drawArrowImage(ctx, (cx0 + cx1) / 2, lineY);
 
         drawSmallCircle(ctx, x0, circleY, circleSize, lineColor);
         drawSmallCircle(ctx, x1, circleY, circleSize, lineColor);
@@ -332,7 +329,7 @@ function drawRouteMapStations(ctx, pids, train) {
             .size(cx2 - cx0, lineThickness)
             .draw(ctx);
 
-        drawArrowImage(ctx, (cx0 + cx1) / 2, lineY, lineColor);
+        drawArrowImage(ctx, (cx0 + cx1) / 2, lineY);
 
         drawSmallCircle(ctx, x0, circleY, circleSize, lineColor);
         drawSmallCircle(ctx, x1, circleY, circleSize, lineColor);
@@ -344,7 +341,7 @@ function drawRouteMapStations(ctx, pids, train) {
     }
 }
 
-function drawArrowImage(ctx, x, y, color) {
+function drawArrowImage(ctx, x, y) {
     let arrowW = 5;
     let arrowH = 4;
     Texture.create()
@@ -434,7 +431,6 @@ function getColorByKeyword(text, defaultColor) {
     if (text.includes("特急") || text.includes("Limited Express")) return 0xE60012;
     if (text.includes("急行") || text.includes("Express")) return 0xEE7800;
     if (text.includes("快速") || text.includes("Rapid")) return 0x0067C4;
-    if (text.includes("各停") || text.includes("Local")) return 0x777777;
-    if (text.includes("普通") || text.includes("Local")) return 0x777777;
+    if (text.includes("各停") || text.includes("普通") || text.includes("Local")) return 0x777777;
     return defaultColor;
 }
